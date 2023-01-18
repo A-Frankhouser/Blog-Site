@@ -36,7 +36,7 @@ router.get('/', withAuth, (req, res) => {
     .then(postData => {
         const posts = postData.map(post => post.get({ plain: true }));
         // renders it to the dashboard
-        res.render('dashboard', { posts, loggedIn: true})
+        res.render('dashboard', { posts, logged_in: true })
     })
     // if there is an error, console.logs it.
     .catch(err => {
@@ -76,7 +76,7 @@ router.get('/edit/:id', withAuth, (req, res) => {
     .then(postData => {
         const post = postData.get({ plain: true });
         // Renders it to the editPost handlebar.
-        res.render('editPost', { post, loggedIn: true });
+        res.render('editPost', { post, logged_in: true });
     })
     // Displays an error if there is one.
     .catch(err => {
