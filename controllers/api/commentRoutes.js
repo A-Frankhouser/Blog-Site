@@ -14,3 +14,18 @@ router.get('/', (req, res) => {
 });
 
 // Creates a comment
+router.post('/', withAuth, (req, res) => {
+    if(req.session){
+    Comment.create({
+        comment_content: req.body.comment_content,
+        post_id: req.body.post_id,
+        user_id: req.session.user_id
+    })
+    .then(commentData => res.json(commentData))
+    // catches error.
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+    };
+});
