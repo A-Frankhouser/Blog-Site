@@ -63,4 +63,17 @@ router.get('/:id', (req, res) => {
             }
         ]
     })
-})
+    .then(postData => {
+        if(!postData) {
+            res.status(404).json({ message: "Cannot find post with this id" });
+            return;
+        } 
+        res.json(postData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    });
+});
+
+// Create a post!
