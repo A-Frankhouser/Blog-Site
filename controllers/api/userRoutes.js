@@ -79,7 +79,7 @@ router.post('/', (req, res) => {
 
 
 // =========================================================================
-// Post. Identifies a specific user.
+// Post. Identifies a specific user. Logs User in.
 router.post('/login', (req, res) => {
     User.findOne({
         where: {
