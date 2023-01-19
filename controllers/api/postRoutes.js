@@ -101,7 +101,8 @@ router.put('/:id', withAuth, (req, res) => {
             id: req.params.id
         }
     }).then(postData => {
-        if(!postData){
+      // if postData doesn't exist then display this message.
+        if (!postData) {
             res.status(404).json({ message: "Sorry, no post found with this id!" });
             return;
         }
@@ -112,3 +113,22 @@ router.put('/:id', withAuth, (req, res) => {
         res.status(500).json(err);
     });
 });
+
+// Deletes a post.
+router.delete('/:id', withAuth, (req, res) => {
+    Post.destroy({
+        where: {
+            id: req.params.id
+        }
+    }).then(postData => {
+        // if postData doesn't exist then display this message.
+        if(!postData) {
+            res.status(404).json({ message: "Sorry, no post found with this id!" });
+            return;
+        }
+        res.json(postData);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json(err)
+    })
+})
