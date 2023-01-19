@@ -1,0 +1,10 @@
+{{!-- Where all blog posts are displayed --}}
+<ol class="post-list">
+    {{#each posts as |post|}}
+    <li>
+        <div>
+            {{post-info post}}
+        </div>
+    </li>
+    {{/each}}
+</ol>
