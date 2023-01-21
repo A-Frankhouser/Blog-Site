@@ -1,17 +1,40 @@
 {{!-- Users Dashboard --}}
+
+
+{{!-- User's posts --}}
 {{#if posts.length}}
 <section>
-    {{!-- Top --}}
     <h2 class="dashboard-header">These are all your posts!</h2>
 
     {{!-- Posts --}}
     <ol>
+        
     {{#each posts as |post|}}
         <li>
-            <article class="post">
-                
-            </article>
+            {{> post-info post}}
+            <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit Post</a>
         </li>
+    {{/each}}
+
     </ol>
 </section>
 {{/if}}
+
+<section>
+    {{!-- Create Post Btn --}}
+    <button class="create-btn" id="create-Btn">+ Create a Post</button>
+
+    {{!-- New post form --}}
+    <form class="new-post-form">
+        <div>
+            <label for="post-title">Title</label>
+            <input type="text" id="post-title" name="post-title" />
+        </div>
+        <div>
+            <label for="post-content">Content</label>
+            <textarea name="post-content" id="" cols="30" rows="10"></textarea>
+        </div>
+    </form>
+
+
+</section>
