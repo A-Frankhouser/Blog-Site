@@ -4,7 +4,7 @@
 
     {{!-- Post Title --}}
     <div class="post-title">
-        <a href="/post/{{post_id}}">{{title}}</a>
+        <a href="/post/{{id}}">{{title}}</a>
     </div>
 
     {{!-- Post Content --}}
@@ -14,7 +14,7 @@
 
     {{!-- username & date_created --}}
     <div class="us-dc">
-        Post created by {{user.username}} on {{format_date date_created}}
+        Post created by {{user.username}} on {{format_date created_at}}
     </div>
 
 </article>

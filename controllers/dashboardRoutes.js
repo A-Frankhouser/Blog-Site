@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const sequilize = require('../config/connection');
+const sequelize = require('../config/connection');
 const { User, Post, Comment } = require('../models');
 const withAuth = require('../utils/auth');
 
@@ -84,6 +84,12 @@ router.get('/edit/:id', withAuth, (req, res) => {
         res.status(500).json(err);
     });
 });
+
+router.get('/new', (req, res) => {
+    res.render('add_post', {
+        logged_in: true
+    })
+})
 
 // exports router
 module.exports = router;

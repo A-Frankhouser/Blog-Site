@@ -30,7 +30,7 @@ router.get("/", async (req, res) => {
     .then(postData => {
         const posts = postData.map(post => post.get({plain: true}));
         // renders data to the homepage
-        res.render('homepage', {posts, loggedIn: req.session.logged_in});
+        res.render('homepage', {posts, logged_in: req.session.logged_in});
     })
     .catch(err => {
         console.log(err);
@@ -47,12 +47,21 @@ router.get("/login", (req, res) => {
 
     res.render("login");
 });
+
+// router.get("/register", (req, res) => {
+//     if (req.session.loggedIn) {
+//         res.redirect("/");
+//     return;
+//     }
+
+//     res.render("register");
+// });
 // =====================================================
 
-router.get('post/:id', (req, res) => {
+router.get('/post/:id', withAuth, (req, res) => {
     Post.findOne({
         where: {
-            id:req.params.id
+            id: req.params.id
         },
         attributes: [
             'id',
@@ -82,9 +91,9 @@ router.get('post/:id', (req, res) => {
             return;
         }
 
-        const posts = postData.get({ plain: true });
+        const post = postData.get({ plain: true });
 
-        res.render('')
+        res.render('singlePost', { post, logged_in: req.session.logged_in})
     })
 })
 
