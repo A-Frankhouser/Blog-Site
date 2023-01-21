@@ -1,14 +1,13 @@
-const { json } = require("sequelize/types");
-
 async function editFormHandler(event) {
     event.preventDefault();
 
     const title = document.querySelector('input[name="post-title"]').value;
-    const id = window.location.toString().split('/')[
+    const post_id = window.location.toString().split('/')[
         window.location.toString().split('/').length -1
     ];
+    const post_content = document.querySelector('textarea[name="post-content"]');
 
-    const response = await fetch(`/api/posts/${id}`, {
+    const response = await fetch(`/api/posts/${post_id}`, {
         method: 'PUT',
         body: JSON.stringify({
             title,
@@ -20,7 +19,7 @@ async function editFormHandler(event) {
     });
     
     if (response.ok) {
-        document.location.replace('/dashboard/')
+        document.location.replace('/dashboard')
     } else {
         alert(response.statusText);
     }

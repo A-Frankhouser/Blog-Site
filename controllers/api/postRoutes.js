@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
-const sequelize = require('../../config/connection');
+// const sequelize = require('../../config/connection');
 const withAuth = require('../../utils/auth');
 
 router.get('/', (req, res) => {
@@ -10,15 +10,15 @@ router.get('/', (req, res) => {
             'id',
             'post_content',
             'title',
-            'date_created'
+            'created_at'
         ],
         // Orders the post by the date it was created in descending order.
-        order: [['date_created', 'DESC']],
+        order: [['created_at', 'DESC']],
         include: [
             // Adds the username to the comment
             {
                 model: Comment,
-                attributes: ['id', 'comment_content', 'post_id', 'user_id', 'date_created'],
+                attributes: ['id', 'comment_content', 'post_id', 'user_id', 'created_at'],
                 include: {
                     model: User,
                     attributes: ['username']
@@ -30,8 +30,8 @@ router.get('/', (req, res) => {
             },
         ]
     })
-    .then(postData => res.json(postData))
-    .catch(err => {
+    .then((postData) => res.json(postData))
+    .catch((err) => {
         res.status(500).json(err);
     }); 
 });
@@ -46,7 +46,7 @@ router.get('/:id', (req, res) => {
             'id',
             'post_content',
             'title',
-            'date_created'
+            'created_at'
         ],
         include: [
             {
@@ -55,7 +55,7 @@ router.get('/:id', (req, res) => {
             },
             {
                 model: Comment,
-                attributes: ['id', 'comment_content', 'user_id', 'post_id', 'date_created'],
+                attributes: ['id', 'comment_content', 'user_id', 'post_id', 'created_at'],
                 include: {
                     model: User,
                     attributes: ['username']
@@ -63,14 +63,14 @@ router.get('/:id', (req, res) => {
             }
         ]
     })
-    .then(postData => {
-        if(!postData) {
+    .then((dbPostData) => {
+        if(!dbPostData) {
             res.status(404).json({ message: "Cannot find post with this id" });
             return;
         } 
-        res.json(postData);
+        res.json(dbPostData);
     })
-    .catch(err => {
+    .catch((err) => {
         console.log(err);
         res.status(500).json(err);
     });
@@ -83,8 +83,8 @@ router.post('/', withAuth, (req, res) => {
         post_content: req.body.post_content,
         user_id: req.session.user_id
     })
-    .then(postData => res.json(postData))
-    .catch(err => {
+    .then((postData) => res.json(postData))
+    .catch((err) => {
         console.log(err);
         res.status(500).json(err);
     });
@@ -100,7 +100,7 @@ router.put('/:id', withAuth, (req, res) => {
         where: {
             id: req.params.id
         }
-    }).then(postData => {
+    }).then((postData) => {
       // if postData doesn't exist then display this message.
         if (!postData) {
             res.status(404).json({ message: "Sorry, no post found with this id!" });
@@ -108,7 +108,7 @@ router.put('/:id', withAuth, (req, res) => {
         }
         res.json(postData);
     })
-    .catch(err => {
+    .catch((err) => {
         console.log(err);
         res.status(500).json(err);
     });

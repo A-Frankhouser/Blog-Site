@@ -1,4 +1,4 @@
-const loginFormHandler = async (event) => {
+async function loginFormHandler(event) {
     event.preventDefault();
 
   // Collect values from the login form
@@ -14,7 +14,8 @@ const password = document.querySelector("#password-login").value.trim();
     });
 
     if (response.ok) {
-      // If successful, redirect the browser to the profile page
+      // If successful, redirect the browser to the dashboard page
+        console.log("logged in");
         document.location.replace("/dashboard");
     } else {
         alert(response.statusText);
@@ -22,12 +23,12 @@ const password = document.querySelector("#password-login").value.trim();
     }
 };
 
-const signupFormHandler = async (event) => {
+async function signupFormHandler(event) {
     event.preventDefault();
 
-const username = document.querySelector("#username-signup").value.trim();
-const email = document.querySelector("#email-signup").value.trim();
-const password = document.querySelector("#password-signup").value.trim();
+const username = document.querySelector("#username-register").value.trim();
+const email = document.querySelector("#email-register").value.trim();
+const password = document.querySelector("#password-register").value.trim();
 
 if (username && email && password) {
     const response = await fetch("/api/users", {
@@ -37,6 +38,7 @@ if (username && email && password) {
     });
 
     if (response.ok) {
+        console.log("signed up");
         document.location.replace("/dashboard");
     } else {
         alert(response.statusText);

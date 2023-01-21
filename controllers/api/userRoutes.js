@@ -29,12 +29,12 @@ router.get('/:id', (req, res) => {
             // Includes Post model.
             {
                 model: Post,
-                attributes: ['id', 'title', 'post_content', 'date_created']
+                attributes: ['id', 'title', 'post_content', 'created_at']
             },
             // Includes Comment model.
             {
                 model: Comment,
-                attributes: ['id', 'comment_content', 'date_created'],
+                attributes: ['id', 'comment_content', 'created_at'],
                 include: {
                     model: Post,
                     attributes: ['title']
@@ -80,36 +80,50 @@ router.post('/', (req, res) => {
 
 // =========================================================================
 // Post. Identifies a specific user. Logs User in.
-router.post('/login', (req, res) => {
-    User.findOne({
-        where: {
-            email: req.body.email
-        }
-    }).then(userData => {
-        if(!userData) {
-            res.status(400).json({ message: "Sorry, cannot find the user with that email address :(" });
-            return;
-        }
-        
-        // Verifies the user by password.
-        const correctPassword = userData.checkPassword(req.body.password);
-        if(!correctPassword){
-            res.status(400).json({ message: "Incorrect username or password. Please try again." });
-            return;
-        }
+router.post("/login", async (req, res) => {
+    try {
+        if (req.session.logged_in) {
+        res.redirect("/dashboard");
+        return;
+    }
+    // Searches for a user
+    const userData = await User.findOne({ where: { email: req.body.email } });
+    console.log(userData);
+
+    if (!userData) {
+        res
+            .status(400)
+            .json({ message: "Incorrect email or password, please try again" });
+        return;
+    }
+
+    // Validates the password
+    const validPassword = await userData.checkPassword(req.body.password);
+
+    if (!validPassword) {
+        res
+            .status(400)
+            .json({ message: "Incorrect email or password, please try again" });
+        return;
+    }
+
         req.session.save(() => {
-            // Saves the session data.
-            req.session.id = userData.id,
-            req.session.username = userData.username,
-            req.session.logged_in = true
-        });
+        req.session.user_id = userData.id;
+        req.session.logged_in = true;
+
+        res.json({ user: userData, message: "You are now logged in!" });
     });
+    } catch (err) {
+        res.status(400).json(err);
+    }
 });
+
+
 
 // Logs a user out.
 router.post('/logout', (req, res) => {
     if(req.session.logged_in) {
-        res.session.destroy(() => {
+        req.session.destroy(() => {
             res.status(204).end();
         });
     } else {

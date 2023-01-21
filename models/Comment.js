@@ -31,7 +31,7 @@ Comment.init(
                 key: "id",
             },
         },
-        date_created: {
+        created_at: {
             type: DataTypes.DATE,
             allowNull: false,
             defaultValue: DataTypes.NOW
