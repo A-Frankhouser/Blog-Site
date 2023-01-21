@@ -1,6 +1,5 @@
 {{!-- Users Dashboard --}}
 
-
 {{!-- User's posts --}}
 {{#if posts.length}}
 <section>
@@ -8,21 +7,19 @@
 
     {{!-- Posts --}}
     <ol>
-        
     {{#each posts as |post|}}
         <li>
             {{> post-info post}}
             <a href="/dashboard/edit/{{post.id}}" class="edit-link">Edit Post</a>
         </li>
     {{/each}}
-
     </ol>
 </section>
 {{/if}}
 
 <section>
     {{!-- Create Post Btn --}}
-    <button class="create-btn" id="create-Btn">+ Create a Post</button>
+    <h2>+ Create a Post</h2>
 
     {{!-- New post form --}}
     <form class="new-post-form">
@@ -32,9 +29,10 @@
         </div>
         <div>
             <label for="post-content">Content</label>
-            <textarea name="post-content" id="" cols="30" rows="10"></textarea>
+            <textarea name="post-content"></textarea>
         </div>
+        <button type="submit" class="btn">+ Create</button>
     </form>
-
-
 </section>
+
+<script src="/public/js/add_post.js"></script>
