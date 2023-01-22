@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
-// const sequelize = require('../../config/connection');
+const sequelize = require('../../config/connection');
 const withAuth = require('../../utils/auth');
 
 router.get('/', (req, res) => {
@@ -17,20 +17,20 @@ router.get('/', (req, res) => {
         include: [
             // Adds the username to the comment
             {
+                model: User,
+                attributes: ['username']
+            },
+            {
                 model: Comment,
                 attributes: ['id', 'comment_content', 'post_id', 'user_id', 'created_at'],
                 include: {
                     model: User,
                     attributes: ['username']
                 }
-            },
-            {
-                model: User,
-                attributes: ['username']
-            },
+            }
         ]
     })
-    .then((postData) => res.json(postData))
+    .then((dbPostData) => res.json(dbPostData))
     .catch((err) => {
         res.status(500).json(err);
     }); 
@@ -83,7 +83,7 @@ router.post('/', withAuth, (req, res) => {
         post_content: req.body.post_content,
         user_id: req.session.user_id
     })
-    .then((postData) => res.json(postData))
+    .then((dbPostData) => res.json(dbPostData))
     .catch((err) => {
         console.log(err);
         res.status(500).json(err);
@@ -93,20 +93,18 @@ router.post('/', withAuth, (req, res) => {
 // Update a post.
 router.put('/:id', withAuth, (req, res) => {
     Post.update({
+        where: { id: req.params.id },
         title: req.body.title,
-        post_content: req.body.post_content
+        post_content: req.body.post_content,
     },
-    {
-        where: {
-            id: req.params.id
-        }
-    }).then((postData) => {
+    
+    ).then((dbPostData) => {
       // if postData doesn't exist then display this message.
-        if (!postData) {
+        if (!dbPostData) {
             res.status(404).json({ message: "Sorry, no post found with this id!" });
             return;
         }
-        res.json(postData);
+        res.json(dbPostData);
     })
     .catch((err) => {
         console.log(err);
@@ -120,17 +118,17 @@ router.delete('/:id', withAuth, (req, res) => {
         where: {
             id: req.params.id
         }
-    }).then(postData => {
+    }).then(dbPostData => {
         // if postData doesn't exist then display this message.
-        if(!postData) {
+        if(!dbPostData) {
             res.status(404).json({ message: "Sorry, no post found with this id!" });
             return;
         }
-        res.json(postData);
+        res.json(dbPostData);
     }).catch(err => {
         console.log(err);
         res.status(500).json(err)
-    })
-})
+    });
+});
 
 module.exports = router;

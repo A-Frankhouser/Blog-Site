@@ -33,8 +33,8 @@ router.get('/', withAuth, (req, res) => {
         ]
     })
     // serializes the data
-    .then(postData => {
-        const posts = postData.map(post => post.get({ plain: true }));
+    .then(dbPostData => {
+        const posts = dbPostData.map(post => post.get({ plain: true }));
         // renders it to the dashboard
         res.render('dashboard', { posts, logged_in: true })
     })
@@ -46,10 +46,10 @@ router.get('/', withAuth, (req, res) => {
 });
 
 // Gets a post by it's ID and allows User to edit it.
-router.get('/edit/:id', withAuth, (req, res) => {
+router.get('/edit/:id', withAuth, async (req, res) => {
     Post.findOne({
         where: {
-            id: req.params.id
+            user_id: req.params.id
         },
         attributes: [
             'id',
@@ -73,23 +73,23 @@ router.get('/edit/:id', withAuth, (req, res) => {
         ]
     })
      // serializes the data
-    .then(postData => {
-        const post = postData.get({ plain: true });
+    try {
+        const post = dbPostData.get({ plain: true });
         // Renders it to the editPost handlebar.
         res.render('editPost', { post, logged_in: true });
-    })
+    }
     // Displays an error if there is one.
-    .catch(err => {
+    catch {
         console.log(err);
         res.status(500).json(err);
-    });
+    };
 });
 
-router.get('/new', (req, res) => {
-    res.render('add_post', {
-        logged_in: true
-    })
-})
+// router.get('/new', (req, res) => {
+//     res.render('add_post', {
+//         logged_in: true
+//     })
+// })
 
 // exports router
 module.exports = router;

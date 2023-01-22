@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { Post, User, Comment } = require("../models");
 const withAuth = require("../utils/auth");
+const sequilize = require('../config/connection');
 
 
 // Get all posts.
@@ -27,8 +28,8 @@ router.get("/", async (req, res) => {
             }
         }]
     })
-    .then(postData => {
-        const posts = postData.map(post => post.get({plain: true}));
+    .then(dbPostData => {
+        const posts = dbPostData.map(post => post.get({ plain: true }));
         // renders data to the homepage
         res.render('homepage', {posts, logged_in: req.session.logged_in});
     })
@@ -58,7 +59,7 @@ router.get("/login", (req, res) => {
 // });
 // =====================================================
 
-router.get('/post/:id', withAuth, (req, res) => {
+router.get('/post/:id', (req, res) => {
     Post.findOne({
         where: {
             id: req.params.id
@@ -85,13 +86,13 @@ router.get('/post/:id', withAuth, (req, res) => {
         ]
     })
 
-    .then(postData => {
-        if(!postData) {
+    .then(dbPostData => {
+        if(!dbPostData) {
             res.status(404).json({ message: 'No post from this user'});
             return;
         }
 
-        const post = postData.get({ plain: true });
+        const post = dbPostData.get({ plain: true });
 
         res.render('singlePost', { post, logged_in: req.session.logged_in})
     })

@@ -9,9 +9,9 @@ router.get('/', (req, res) => {
         // excludes the password.
         attributes: { exclude: ['password'] }
     })
-    .then(userData => res.jason(userData))
+    .then(dbUserData => res.jason(dbUserData))
     // Logs error if there is one.
-    .catch( err => {
+    .catch(err => {
         console.log(err);
         res.status(500).json(err);
     });
@@ -42,13 +42,13 @@ router.get('/:id', (req, res) => {
             }
         ]
     })
-    .then(userData => {
+    .then(dbUserData => {
         // If cannot find userData.
-        if (!userData) {
+        if (!dbUserData) {
             res.status(400).json({ message: "Sorry, no user found with this id" })
             return;
         }
-        res.json(userData);
+        res.json(dbUserData);
     })
     // If there is an error it will console log the error.
     .catch(err => {
@@ -66,15 +66,19 @@ router.post('/', (req, res) => {
         password: req.body.password
     })
     // Stores the user data in the session.
-    .then(userData => {
+    .then(dbUserData => {
         req.session.save(() => {
-            req.session.user_id = userData.id,
-            req.session.username = userData.username,
+            req.session.user_id = dbUserData.id,
+            req.session.username = dbUserData.username,
             req.session.logged_in = true;
 
-            res.json(userData);
+            res.json(dbUserData);
         });
-    });
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    }); 
 });
 
 
@@ -109,6 +113,7 @@ router.post("/login", async (req, res) => {
 
         req.session.save(() => {
         req.session.user_id = userData.id;
+        req.session.username = userData.username;
         req.session.logged_in = true;
 
         res.json({ user: userData, message: "You are now logged in!" });
