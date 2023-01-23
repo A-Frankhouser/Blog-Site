@@ -93,11 +93,14 @@ router.post('/', withAuth, (req, res) => {
 // Update a post.
 router.put('/:id', withAuth, (req, res) => {
     Post.update({
-        where: { id: req.params.id },
         title: req.body.title,
         post_content: req.body.post_content,
     },
-    
+    {
+        where: {
+            id: req.params.id
+        }
+    }  
     ).then((dbPostData) => {
       // if postData doesn't exist then display this message.
         if (!dbPostData) {
