@@ -14,23 +14,31 @@
         {{!-- CSS --}}
     <link rel="stylesheet" href="/css/style.css">
         {{!-- Bootstrap --}}
-    {{!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script> --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Gentium+Book+Plus&family=Quicksand:wght@300&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
 <div>
     <header>
-        <h1 class="container-fluid text-center bg-info lh-lg">The Blog Spot!</h1>
-    <nav>
-        {{#if logged_in}}
-        <a href="/dashboard">Dashboard</a>
-        <a href="/">Homepage</a>
-        <button id="logout" class="no-button">Logout</button>
+        {{!-- "The Blog Spot hero" --}}
+        <h1 class="container-fluid text-center bg-success p-2  bg-opacity-75 lh-lg text-white">The Blog Spot!</h1>
 
-        {{else}}
-        <a href="/">Homepage</a>
-        <a href="/login">Login</a>
-        {{/if}}
+        {{!-- Navbar --}}
+    <nav class="navbar navbar-expand-lg bg-success p-1 bg-opacity-10" id="navbar">
+        <div class="navbar">
+            {{#if logged_in}}
+            <a href="/dashboard" class="nav-item">Dashboard</a>
+            <a href="/" class="nav-item">Homepage</a>
+            <button id="logout" class="no-button btn btn-secondary nav-item">Logout</button>
+
+            {{else}}
+            <a href="/">Homepage</a>
+            <a href="/login">Login</a>
+            {{/if}}
+        </div>
     </nav>
     </header>
 
@@ -39,7 +47,7 @@
     </main>
 
     <footer>
-        Thank you for blogging!
+        
     </footer>
 </div>
     {{#if logged_in}}

@@ -48,7 +48,6 @@ router.get("/", withAuth, (req, res) => {
 
 // Gets a post by it's ID and allows User to edit it.
 router.get("/edit/:id", withAuth, async (req, res) => {
-  console.log("tutor", req.params.id);
 
   // serializes the data
   try {
