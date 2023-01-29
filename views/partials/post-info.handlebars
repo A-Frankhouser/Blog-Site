@@ -1,20 +1,20 @@
 {{!-- The Post Template--}}
 
-<article class="post">
+<article class="post mt-3 bg-success text-dark bg-opacity-10" id="pstHt">
 
     {{!-- Post Title --}}
-    <div class="post-title">
+    <div class="post-title ms-3 mb-2">
         <a href="/post/{{id}}">{{title}}</a>
     </div>
 
     {{!-- Post Content --}}
-    <div class="post-content">
+    <div class="post-content ms-5 mb-2">
         {{post_content}}
     </div>
 
     {{!-- username & date_created --}}
-    <div class="us-dc">
-        Post created by {{user.username}} on {{format_date created_at}}
+    <div class="us-dc fst-italic ms-5">
+        Post created by <strong>{{user.username}}</strong> on <strong>{{format_date created_at}}</strong>
     </div>
 
 </article>

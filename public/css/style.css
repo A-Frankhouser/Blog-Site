@@ -110,3 +110,26 @@ text-decoration:underline;
     font-weight: 800;
     font-size: larger;
 }
+/* =============================================== *
+
+/* Post-info partial*/
+.post-title a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+    font-size: larger;
+    width: fit-content;
+    height: fit-content;
+}
+
+.post-title a:hover{
+    background-color: lightgreen;
+    /* width: max-content; */
+    border-radius: 10px;
+    padding: .5%;
+}
+
+#pstHt {
+    height: max-content;
+}
+

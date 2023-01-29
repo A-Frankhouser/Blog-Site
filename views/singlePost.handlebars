@@ -1,16 +1,16 @@
-<a href="/dashboard" class="go-back"> &larr; Back to dashboard</a>
+<a href="/dashboard" class="go-back btn btn-secondary m-3"> &larr; Back to dashboard</a>
 
 {{> post-info post}}
 
 {{!-- Displays form and comments only if logged in --}}
 {{#if logged_in}}
 <form class="comment-form">
-    <div>
-        <textarea name="comment-body"></textarea>
+    <div class="m-4">
+        <textarea name="comment-body" class="form-control"></textarea>
     </div>
 
     <div>
-        <button type="submit">Add Comment</button>
+        <button type="submit" class="m-4 btn btn-secondary">Add Comment</button>
     </div>
 </form>
 {{/if}}

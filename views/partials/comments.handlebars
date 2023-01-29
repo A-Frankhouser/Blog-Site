@@ -1,11 +1,11 @@
 <div class="comments">
     {{#each this}}
     <section class="comment">
-        <div class="us-dc">
-            Created by {{user.username}} on {{format_date created_at}}
+        <div class="us-dc fst-italic ms-3">
+            Created by <strong>{{user.username}}</strong> on <strong>{{format_date created_at}}</strong>
         </div>
 
-        <div class="text">
+        <div class="text ms-4 mb-3 fw-normal">
             {{comment_content}}
         </div>
     </section>
